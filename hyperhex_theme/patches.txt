@@ -1,0 +1,3 @@
+# patches.txt
+# Add your patch entries here
+# Format: patch.to.section  =  path-to-patch
