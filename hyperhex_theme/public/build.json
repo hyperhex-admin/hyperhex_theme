@@ -1,11 +1,11 @@
 {
   "css/hyperhex_theme.bundle.css": [
-    "css/hyperhex_theme.css"
+    "css/hyperhex_theme.bundle.css"
   ],
   "css/hyperhex_web.bundle.css": [
-    "css/hyperhex_web.css"
+    "css/hyperhex_web.bundle.css"
   ],
   "js/hyperhex_theme.bundle.js": [
-    "js/hyperhex_theme.js"
+    "js/hyperhex_theme.bundle.js"
   ]
 }
