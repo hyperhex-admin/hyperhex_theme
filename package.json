@@ -4,8 +4,6 @@
   "description": "HyperHex Solutions — Industrial Dark Theme for ERPNext v15",
   "license": "MIT",
   "private": true,
-  "scripts": {
-    "build": "node esbuild --apps hyperhex_theme"
-  },
+  "scripts": {},
   "devDependencies": {}
 }
