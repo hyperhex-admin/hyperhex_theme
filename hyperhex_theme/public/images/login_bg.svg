@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+  <rect width="1440" height="900" fill="#060A0F"/>
+  <!-- Hex grid pattern -->
+  <defs>
+    <pattern id="hexGrid" x="0" y="0" width="60" height="52" patternUnits="userSpaceOnUse">
+      <polygon points="30,2 58,17 58,35 30,50 2,35 2,17" fill="none" stroke="#00FFB2" stroke-width="0.5" opacity="0.08"/>
+    </pattern>
+    <radialGradient id="glow" cx="30%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00FFB2" stop-opacity="0.07"/>
+      <stop offset="100%" stop-color="#060A0F" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1440" height="900" fill="url(#hexGrid)"/>
+  <rect width="1440" height="900" fill="url(#glow)"/>
+  <!-- Large hex accent -->
+  <polygon points="200,100 500,270 500,610 200,780 -100,610 -100,270" fill="none" stroke="#00FFB2" stroke-width="1" opacity="0.06"/>
+  <polygon points="1300,50 1550,190 1550,470 1300,610 1050,470 1050,190" fill="none" stroke="#00FFB2" stroke-width="1" opacity="0.05"/>
+  <!-- Wordmark -->
+  <text x="72" y="72" font-family="'Courier New', monospace" font-size="22" font-weight="bold" letter-spacing="8" fill="#EEF4FA" opacity="0.9">HYPERHEX</text>
+  <text x="72" y="94" font-family="'Courier New', monospace" font-size="10" letter-spacing="5" fill="#00FFB2" opacity="0.7">SOLUTIONS</text>
+</svg>

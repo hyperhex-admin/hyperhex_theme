@@ -1,0 +1,17 @@
+/* ============================================================
+   HYPERHEX THEME — Web/Portal Pages
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Barlow:wght@300;400;500;600&display=swap');
+
+body {
+  background: #060A0F !important;
+  color: #C8D8E8 !important;
+  font-family: 'Barlow', sans-serif !important;
+}
+
+.navbar { background: #0C1219 !important; border-bottom: 1px solid #1E2D3D !important; }
+.navbar-brand { font-family: 'Bebas Neue', sans-serif !important; letter-spacing: .1em; color: #EEF4FA !important; }
+.nav-link { color: #5A7080 !important; font-family: 'DM Mono', monospace !important; font-size: .72rem !important; text-transform: uppercase; letter-spacing: .08em; }
+.nav-link:hover { color: #00FFB2 !important; }
+.btn-primary { background: #00FFB2 !important; border-color: #00FFB2 !important; color: #060A0F !important; border-radius: 0 !important; font-family: 'DM Mono', monospace !important; text-transform: uppercase; letter-spacing: .1em; }
+a { color: #00FFB2 !important; }

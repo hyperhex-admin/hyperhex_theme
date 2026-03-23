@@ -1,0 +1,10 @@
+{
+  "app_name": "hyperhex_theme",
+  "app_title": "HyperHex Theme",
+  "app_publisher": "HyperHex Solutions",
+  "app_description": "Industrial dark theme for ERPNext v15",
+  "app_version": "1.0.0",
+  "app_email": "hello@hyperhexsolutions.com",
+  "app_license": "MIT",
+  "required_apps": []
+}
