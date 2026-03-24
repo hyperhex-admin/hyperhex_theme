@@ -24,15 +24,15 @@ web_include_css = [
 ]
 
 # Override the login page
-login_page_image = "/assets/hyperhex_theme/images/login_bg.svg"
+# login_page_image = "/assets/hyperhex_theme/images/login_bg.svg"
 
 # Page hooks
 page_js = {}
 
-website_context = {
-    "favicon": "/assets/hyperhex_theme/images/favicon.svg",
-    "top_bar_items": [],
-}
+# website_context = {
+#     "favicon": "/assets/hyperhex_theme/images/favicon.svg",
+#     "top_bar_items": [],
+# }
 
 override_whitelisted_methods = {
     "frappe.core.doctype.user.user.switch_theme": "hyperhex_theme.overrides.switch_theme.switch_theme"
