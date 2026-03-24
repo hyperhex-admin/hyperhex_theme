@@ -7,65 +7,40 @@
   'use strict';
 
   // ── Theme Switcher Override ──────────────────────────────────
-  // Extends Frappe's built-in ThemeSwitcher to add HyperHex themes
-  // to the avatar menu → Toggle Theme modal
+  // Extend Frappe's ThemeSwitcher and override fetch_themes to return Promise
   frappe.ui.ThemeSwitcher = class HyperHexThemeSwitcher extends frappe.ui.ThemeSwitcher {
     constructor() {
       super();
-      this.fetch_themes();
     }
 
     fetch_themes() {
-      this.themes = [
-        {
-          name: "light",
-          label: "HyperHex Light",
-          info: "Industrial Light Theme"
-        },
-        {
-          name: "dark",
-          label: "HyperHex Dark",
-          info: "Industrial Dark Theme"
-        },
-        {
-          name: "automatic",
-          label: "Automatic",
-          info: "Follows system preference"
-        }
-      ];
-      this.current_theme = this.get_theme();
+      var me = this;
+      return new Promise(function (resolve) {
+        me.themes = [
+          { name: "light", label: "HyperHex Light", info: "Industrial Light Theme" },
+          { name: "dark", label: "HyperHex Dark", info: "Industrial Dark Theme" },
+          { name: "automatic", label: "Automatic", info: "Follows system preference" }
+        ];
+        me.current_theme = localStorage.getItem('desk_theme') || frappe.boot?.theme || 'dark';
+        resolve();
+      });
     }
 
-    get_theme() {
-      return localStorage.getItem('desk_theme') || frappe.boot?.theme || 'dark';
-    }
-
-    select_theme(theme) {
+    set_theme(theme) {
       var me = this;
       localStorage.setItem('desk_theme', theme);
       
       frappe.call({
         method: "hyperhex_theme.overrides.switch_theme.switch_theme",
-        args: { theme: theme },
-        callback: function(r) {
-          if (r.message) {
-            frappe.show_alert(__("Theme changed to {0}", [r.message.theme === 'automatic' ? 'Automatic' : r.message.theme === 'dark' ? 'HyperHex Dark' : 'HyperHex Light']));
-          }
-        }
+        args: { theme: theme }
       });
 
-      this.apply_theme(theme);
-      this.dialog && this.dialog.hide();
-    }
-
-    apply_theme(theme) {
       if (theme === 'automatic') {
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
       } else {
         document.documentElement.setAttribute('data-theme', theme);
       }
-      this.current_theme = theme;
     }
   };
 
@@ -80,7 +55,6 @@
     }
   }
 
-  // Listen for system theme changes
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
     const stored = localStorage.getItem('desk_theme');
     if (stored === 'automatic' || !stored) {
@@ -88,12 +62,12 @@
     }
   });
 
-  // Apply stored theme on load
+  // Apply stored theme on load and init HyperHex
   frappe.ready(function () {
     init_auto_theme();
+    HyperHex.init();
   });
 
-  // Also run after every page load (Frappe is an SPA)
   $(document).on('page-change', function () {
     HyperHex.onPageChange();
   });
@@ -109,7 +83,6 @@
       console.log('%c⬡ HyperHex Theme Loaded', 'color:#00FFB2;font-family:monospace;font-size:12px;');
     },
 
-    // ── Sync theme attribute from Frappe ───────────────────────
     syncThemeAttribute: function () {
       const theme = localStorage.getItem('desk_theme') || frappe.boot?.theme || 'dark';
       if (theme === 'automatic') {
@@ -128,7 +101,6 @@
       this.styleNumberCards();
     },
 
-    // ── Favicon ──────────────────────────────────────────────
     injectFavicon: function () {
       var existing = document.querySelector('link[rel="icon"]');
       if (existing) existing.remove();
@@ -139,7 +111,6 @@
       document.head.appendChild(link);
     },
 
-    // ── Navbar Brand ─────────────────────────────────────────
     styleNavbarBrand: function () {
       var brand = document.querySelector('.navbar-brand');
       if (brand && brand.textContent.trim()) {
@@ -150,7 +121,6 @@
       }
     },
 
-    // ── Hex grid on the desk home page ───────────────────────
     addHexGridToHome: function () {
       var modules = document.querySelectorAll('.desk-link, .module-icon');
       modules.forEach(function (el, i) {
@@ -159,7 +129,6 @@
       });
     },
 
-    // ── Page entry animation ──────────────────────────────────
     addPageEntryAnimation: function () {
       var content = document.querySelector('.layout-main-section');
       if (content) {
@@ -175,7 +144,6 @@
       }
     },
 
-    // ── Style status badges ───────────────────────────────────
     styleStatusBadges: function () {
       var inProgress = document.querySelectorAll('.indicator-pill.orange, .indicator-pill.yellow');
       inProgress.forEach(function (el) {
@@ -183,7 +151,6 @@
       });
     },
 
-    // ── Form head accent ─────────────────────────────────────
     enhanceFormHead: function () {
       var formHead = document.querySelector('.form-page .page-head');
       if (formHead && !formHead.classList.contains('hx-enhanced')) {
@@ -198,7 +165,6 @@
       }
     },
 
-    // ── Number card color ────────────────────────────────────
     styleNumberCards: function () {
       var cards = document.querySelectorAll('.number-card');
       cards.forEach(function (card) {
@@ -213,7 +179,6 @@
     }
   };
 
-  // ── Global CSS keyframes injected via JS ───────────────────
   var style = document.createElement('style');
   style.textContent = `
     @keyframes hx-pulse {
