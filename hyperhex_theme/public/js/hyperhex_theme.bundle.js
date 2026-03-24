@@ -7,22 +7,16 @@
   'use strict';
 
   // ── Theme Switcher Override ──────────────────────────────────
-  // Wait for frappe.ui.ThemeSwitcher to be available, then patch it
   function patchThemeSwitcher() {
     if (typeof frappe === 'undefined' || !frappe.ui || !frappe.ui.ThemeSwitcher) {
       setTimeout(patchThemeSwitcher, 100);
       return;
     }
 
+    // Store original
     var OriginalThemeSwitcher = frappe.ui.ThemeSwitcher;
 
-    frappe.ui.ThemeSwitcher = function() {
-      OriginalThemeSwitcher.call(this);
-    };
-
-    frappe.ui.ThemeSwitcher.prototype = Object.create(OriginalThemeSwitcher.prototype);
-    frappe.ui.ThemeSwitcher.prototype.constructor = frappe.ui.ThemeSwitcher;
-
+    // Override fetch_themes
     frappe.ui.ThemeSwitcher.prototype.fetch_themes = function() {
       var me = this;
       return new Promise(function(resolve) {
@@ -36,6 +30,7 @@
       });
     };
 
+    // Override set_theme
     frappe.ui.ThemeSwitcher.prototype.set_theme = function(theme) {
       console.log('HyperHex set_theme called:', theme);
       localStorage.setItem('desk_theme', theme);
@@ -52,8 +47,10 @@
         document.documentElement.setAttribute('data-theme', theme);
       }
 
-      // Call original set_theme
-      OriginalThemeSwitcher.prototype.set_theme.call(this, theme);
+      // Call original set_theme if it exists
+      if (OriginalThemeSwitcher.prototype.set_theme) {
+        OriginalThemeSwitcher.prototype.set_theme.call(this, theme);
+      }
     };
 
     console.log('HyperHex ThemeSwitcher patched');
