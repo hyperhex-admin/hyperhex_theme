@@ -25,6 +25,7 @@
     }
 
     set_theme(theme) {
+      console.log('HyperHex set_theme called:', theme);
       localStorage.setItem('desk_theme', theme);
       
       frappe.call({
@@ -32,6 +33,12 @@
         args: { theme: theme }
       });
 
+      this.apply_theme(theme);
+      super.set_theme(theme);
+    }
+
+    apply_theme(theme) {
+      console.log('HyperHex apply_theme:', theme);
       if (theme === 'automatic') {
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
