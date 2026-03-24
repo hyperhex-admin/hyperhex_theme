@@ -14,9 +14,8 @@ def switch_theme(theme: str = "light"):
     if user == "Guest":
         frappe.throw("Guest user cannot switch theme")
 
-    frappe.db.set_value("User", user, "user_theme", theme)
-    frappe.local.response["message"] = {
-        "message": "Theme switched",
-        "theme": theme,
-    }
+    user_meta = frappe.get_meta("User")
+    if user_meta.has_field("user_theme"):
+        frappe.db.set_value("User", user, "user_theme", theme)
+
     return {"theme": theme}
