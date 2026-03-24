@@ -184,7 +184,7 @@
 /* Sidebar items */
 [data-theme="light"] .desk-sidebar .sidebar-item,
 [data-theme="light"] .standard-sidebar a {
-  color: #1E293B !important;
+  color: #000000 !important;
 }
 [data-theme="light"] .desk-sidebar .sidebar-item:hover,
 [data-theme="light"] .standard-sidebar a:hover {
@@ -230,7 +230,7 @@
 
 /* Light theme links - dark */
 [data-theme="light"] a {
-  color: #1E293B !important;
+  color: #000000 !important;
 }
 [data-theme="light"] a:hover {
   color: #0F172A !important;
@@ -244,7 +244,7 @@
 [data-theme="light"] li,
 [data-theme="light"] td,
 [data-theme="light"] th {
-  color: #1E293B !important;
+  color: #000000 !important;
 }
 [data-theme="light"] .text-muted,
 [data-theme="light"] .text-muted * {
@@ -347,7 +347,7 @@
 }
 [data-theme="light"] .login-content h1,
 [data-theme="light"] .page-card h4.title {
-  color: #1E293B !important;
+  color: #000000 !important;
 }
 
 /* Light theme hex grid */
