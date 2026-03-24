@@ -13,9 +13,6 @@
       return;
     }
 
-    // Store original
-    var OriginalThemeSwitcher = frappe.ui.ThemeSwitcher;
-
     // Override fetch_themes
     frappe.ui.ThemeSwitcher.prototype.fetch_themes = function() {
       var me = this;
@@ -25,34 +22,31 @@
           { name: "dark", label: "HyperHex Dark", info: "Industrial Dark Theme" },
           { name: "automatic", label: "Automatic", info: "Follows system preference" }
         ];
-        me.current_theme = localStorage.getItem('desk_theme') || frappe.boot?.theme || 'dark';
+        me.current_theme = localStorage.getItem('desk_theme') || 'dark';
         resolve(me.themes);
       });
     };
 
-    // Override set_theme
-    frappe.ui.ThemeSwitcher.prototype.set_theme = function(theme) {
-      console.log('HyperHex set_theme called:', theme);
+    // Override toggle_theme - this is called when user selects a theme
+    frappe.ui.ThemeSwitcher.prototype.toggle_theme = function(theme) {
+      console.log('HyperHex toggle_theme called:', theme);
+      theme = theme.toLowerCase();
+      this.current_theme = theme;
+      
+      // Set both data-theme-mode and data-theme
+      document.documentElement.setAttribute("data-theme-mode", theme);
+      document.documentElement.setAttribute("data-theme", theme);
+      
+      // Save to localStorage
       localStorage.setItem('desk_theme', theme);
-      console.log('Saved to localStorage, now:', localStorage.getItem('desk_theme'));
+      
+      // Show alert
+      frappe.show_alert(__("Theme Changed to " + theme), 3);
 
-      frappe.call({
-        method: "hyperhex_theme.overrides.switch_theme.switch_theme",
-        args: { theme: theme }
+      // Call backend API
+      frappe.xcall("hyperhex_theme.overrides.switch_theme.switch_theme", {
+        theme: theme
       });
-
-      if (theme === 'automatic') {
-        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
-      } else {
-        document.documentElement.setAttribute('data-theme', theme);
-      }
-      console.log('data-theme set to:', document.documentElement.getAttribute('data-theme'));
-
-      // Call original set_theme if it exists
-      if (OriginalThemeSwitcher.prototype.set_theme) {
-        OriginalThemeSwitcher.prototype.set_theme.call(this, theme);
-      }
     };
 
     console.log('HyperHex ThemeSwitcher patched');
@@ -65,28 +59,78 @@
     patchThemeSwitcher();
   }
 
+  // ── Override frappe.ui.set_theme ─────────────────────────────
+  function patchSetTheme() {
+    if (typeof frappe === 'undefined' || !frappe.ui) {
+      setTimeout(patchSetTheme, 100);
+      return;
+    }
+
+    var originalSetTheme = frappe.ui.set_theme;
+    
+    frappe.ui.set_theme = function(theme) {
+      var root = document.documentElement;
+      var theme_mode = root.getAttribute("data-theme-mode") || 'dark';
+      
+      if (!theme) {
+        if (theme_mode === "automatic") {
+          theme = frappe.ui.dark_theme_media_query.matches ? "dark" : "light";
+        }
+      }
+      
+      // Set both attributes
+      root.setAttribute("data-theme-mode", theme || theme_mode);
+      root.setAttribute("data-theme", theme || theme_mode);
+    };
+
+    console.log('HyperHex frappe.ui.set_theme patched');
+  }
+
+  // Start patching
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', patchSetTheme);
+  } else {
+    patchSetTheme();
+  }
+
   // ── Automatic theme detection ───────────────────────────────
   function init_auto_theme() {
     var stored = localStorage.getItem('desk_theme');
-    console.log('init_auto_theme - stored:', stored);
-    console.log('init_auto_theme - frappe.boot.theme:', frappe.boot?.theme);
-    if (stored === 'automatic' || !stored) {
+    var theme_mode = document.documentElement.getAttribute('data-theme-mode') || stored || 'dark';
+    
+    console.log('init_auto_theme - stored:', stored, 'theme_mode:', theme_mode);
+    
+    if (theme_mode === 'automatic' || !stored) {
       var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+      var autoTheme = prefersDark ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', autoTheme);
+      document.documentElement.setAttribute('data-theme-mode', theme_mode);
     } else {
       document.documentElement.setAttribute('data-theme', stored);
+      document.documentElement.setAttribute('data-theme-mode', stored);
     }
-    console.log('data-theme attribute:', document.documentElement.getAttribute('data-theme'));
+  }
+
+  // Listen for system theme changes
+  if (typeof frappe !== 'undefined' && frappe.ui && frappe.ui.dark_theme_media_query) {
+    frappe.ui.dark_theme_media_query.addEventListener('change', function(e) {
+      var theme_mode = document.documentElement.getAttribute('data-theme-mode');
+      if (theme_mode === 'automatic') {
+        var newTheme = e.matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', newTheme);
+      }
+    });
   }
 
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
-    var stored = localStorage.getItem('desk_theme');
-    if (stored === 'automatic' || !stored) {
-      document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+    var theme_mode = document.documentElement.getAttribute('data-theme-mode');
+    if (theme_mode === 'automatic') {
+      var newTheme = e.matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', newTheme);
     }
   });
 
-  // Apply stored theme on load and init HyperHex
+  // Apply stored theme on load
   function initApp() {
     init_auto_theme();
     HyperHex.init();
@@ -105,7 +149,6 @@
   var HyperHex = {
 
     init: function () {
-      this.syncThemeAttribute();
       this.injectFavicon();
       this.styleNavbarBrand();
       this.addHexGridToHome();
@@ -113,19 +156,7 @@
       console.log('%c⬡ HyperHex Theme Loaded', 'color:#00FFB2;font-family:monospace;font-size:12px;');
     },
 
-    syncThemeAttribute: function () {
-      var theme = localStorage.getItem('desk_theme') || frappe.boot?.theme || 'dark';
-      console.log('syncThemeAttribute - theme:', theme);
-      if (theme === 'automatic') {
-        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
-      } else {
-        document.documentElement.setAttribute('data-theme', theme);
-      }
-    },
-
     onPageChange: function () {
-      this.syncThemeAttribute();
       this.addPageEntryAnimation();
       this.styleStatusBadges();
       this.enhanceFormHead();
