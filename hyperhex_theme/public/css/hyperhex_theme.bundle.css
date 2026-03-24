@@ -121,7 +121,7 @@
   --input-bg:             var(--hx-bg-elevated);
   --input-border-color:   var(--hx-border);
   --input-focus-border:   var(--hx-green);
-  --link-color:           var(--hx-green);
+  --link-color:           #1E293B;
   --modal-bg:             var(--hx-bg-elevated);
   --popover-bg:           var(--hx-bg-elevated);
   --table-border-color:   var(--hx-border);
@@ -228,12 +228,27 @@
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
 }
 
-/* Light theme links */
+/* Light theme links - dark */
 [data-theme="light"] a {
-  color: #2563EB !important;
+  color: #1E293B !important;
 }
 [data-theme="light"] a:hover {
-  color: #1D4ED8 !important;
+  color: #0F172A !important;
+}
+
+/* Force all text to be dark in light theme */
+[data-theme="light"] body,
+[data-theme="light"] p,
+[data-theme="light"] span,
+[data-theme="light"] div,
+[data-theme="light"] li,
+[data-theme="light"] td,
+[data-theme="light"] th {
+  color: #1E293B !important;
+}
+[data-theme="light"] .text-muted,
+[data-theme="light"] .text-muted * {
+  color: #475569 !important;
 }
 
 /* Light theme buttons */
