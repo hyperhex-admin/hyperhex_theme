@@ -93,10 +93,10 @@
   --hx-border-mid:   #94A3B8;
 
   /* Text — Dark slate */
-  --hx-text-primary: #1E293B;
-  --hx-text-body:    #334155;
-  --hx-text-muted:   #64748B;
-  --hx-text-faint:   #94A3B8;
+  --hx-text-primary: #0F172A;
+  --hx-text-body:    #1E293B;
+  --hx-text-muted:   #475569;
+  --hx-text-faint:   #64748B;
 
   /* Status - Single blue theme */
   --hx-success:      #2563EB;
@@ -162,11 +162,11 @@
 
 /* Navbar text - white on dark navbar */
 [data-theme="light"] .navbar .navbar-brand {
-  color: #F8FAFC !important;
+  color: #FFFFFF !important;
 }
 [data-theme="light"] .navbar .nav-link,
 [data-theme="light"] .navbar .nav-item > a {
-  color: #CBD5E1 !important;
+  color: #E2E8F0 !important;
 }
 [data-theme="light"] .navbar .nav-link:hover {
   color: #FFFFFF !important;
@@ -184,12 +184,12 @@
 /* Sidebar items */
 [data-theme="light"] .desk-sidebar .sidebar-item,
 [data-theme="light"] .standard-sidebar a {
-  color: #475569 !important;
+  color: #1E293B !important;
 }
 [data-theme="light"] .desk-sidebar .sidebar-item:hover,
 [data-theme="light"] .standard-sidebar a:hover {
   background: #CBD5E1 !important;
-  color: #1E293B !important;
+  color: #0F172A !important;
   border-left-color: #2563EB !important;
 }
 [data-theme="light"] .desk-sidebar .sidebar-item.selected,
@@ -281,7 +281,7 @@
 
 /* Light theme breadcrumbs */
 [data-theme="light"] .breadcrumb-item a {
-  color: #64748B !important;
+  color: #475569 !important;
 }
 [data-theme="light"] .breadcrumb-item.active {
   color: #2563EB !important;
