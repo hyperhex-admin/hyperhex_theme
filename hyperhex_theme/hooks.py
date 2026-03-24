@@ -33,3 +33,7 @@ website_context = {
     "favicon": "/assets/hyperhex_theme/images/favicon.svg",
     "top_bar_items": [],
 }
+
+override_whitelisted_methods = {
+    "frappe.core.doctype.user.user.switch_theme": "hyperhex_theme.overrides.switch_theme.switch_theme"
+}

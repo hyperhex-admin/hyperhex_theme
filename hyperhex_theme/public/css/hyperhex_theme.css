@@ -69,6 +69,78 @@
 }
 
 /* ============================================================
+   1B. LIGHT THEME — Override vars when [data-theme="light"]
+   ============================================================ */
+[data-theme="light"] {
+  /* Brand */
+  --hx-green:        #00CC8E;
+  --hx-green-dim:    #00AA77;
+  --hx-green-glow:   rgba(0, 204, 142, 0.12);
+  --hx-green-border: rgba(0, 204, 142, 0.25);
+
+  /* Backgrounds — Industrial light palette */
+  --hx-bg-base:      #F0F2F5;
+  --hx-bg-surface:   #FFFFFF;
+  --hx-bg-elevated:  #E8EBF0;
+  --hx-bg-hover:     #DFE2E8;
+  --hx-bg-active:    #D4D8E0;
+
+  /* Borders */
+  --hx-border:       #CBD0D9;
+  --hx-border-mid:   #B8BFC9;
+
+  /* Text — Dark industrial */
+  --hx-text-primary: #1A1D24;
+  --hx-text-body:    #3A3F4A;
+  --hx-text-muted:   #6B7280;
+  --hx-text-faint:   #9CA3AF;
+
+  /* Status — Same accent colors for consistency */
+  --hx-success:      #00CC8E;
+  --hx-warning:      #E6A700;
+  --hx-danger:       #E53E4E;
+  --hx-info:         #0090E6;
+
+  /* Frappe v15 overrides */
+  --primary:              var(--hx-green);
+  --primary-color:        var(--hx-green);
+  --sidebar-bg:           var(--hx-bg-surface);
+  --navbar-bg:            var(--hx-bg-surface);
+  --body-bg:              var(--hx-bg-base);
+  --card-bg:              var(--hx-bg-surface);
+  --disabled-text-color:  var(--hx-text-muted);
+  --text-color:           var(--hx-text-body);
+  --text-muted:           var(--hx-text-muted);
+  --heading-color:        var(--hx-text-primary);
+  --border-color:         var(--hx-border);
+  --btn-primary-bg:       var(--hx-green);
+  --btn-primary-color:    #fff;
+  --input-bg:             var(--hx-bg-surface);
+  --input-border-color:   var(--hx-border);
+  --input-focus-border:   var(--hx-green);
+  --link-color:           var(--hx-green);
+  --modal-bg:             var(--hx-bg-surface);
+  --popover-bg:           var(--hx-bg-surface);
+  --table-border-color:   var(--hx-border);
+  --awesomplete-hover:    var(--hx-bg-hover);
+}
+
+/* Light theme scrollbar */
+[data-theme="light"] * {
+  scrollbar-width: thin;
+  scrollbar-color: var(--hx-border-mid) var(--hx-bg-surface);
+}
+[data-theme="light"] ::-webkit-scrollbar { width: 6px; height: 6px; }
+[data-theme="light"] ::-webkit-scrollbar-track { background: var(--hx-bg-surface); }
+[data-theme="light"] ::-webkit-scrollbar-thumb { background: var(--hx-border-mid); border-radius: 3px; }
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover { background: var(--hx-text-muted); }
+
+/* Light theme modal backdrop */
+[data-theme="light"] .modal-backdrop {
+  background: rgba(240, 242, 245, 0.85) !important;
+}
+
+/* ============================================================
    2. GLOBAL / BODY
    ============================================================ */
 body,

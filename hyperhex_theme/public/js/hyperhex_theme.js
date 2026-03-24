@@ -6,6 +6,58 @@
 (function () {
   'use strict';
 
+  // ── Theme Switcher Override ──────────────────────────────────
+  // Extends Frappe's built-in ThemeSwitcher to add HyperHex themes
+  // to the avatar menu → Toggle Theme modal
+  frappe.ui.ThemeSwitcher = class HyperHexThemeSwitcher extends frappe.ui.ThemeSwitcher {
+    constructor() {
+      super();
+    }
+
+    fetch_themes() {
+      this.themes = [
+        {
+          name: "light",
+          label: "HyperHex Light",
+          info: "Industrial Light Theme"
+        },
+        {
+          name: "dark",
+          label: "HyperHex Dark",
+          info: "Industrial Dark Theme"
+        },
+        {
+          name: "automatic",
+          label: "Automatic",
+          info: "Follows system preference"
+        }
+      ];
+      this.current_theme = this.get_theme();
+    }
+  };
+
+  // ── Automatic theme detection ───────────────────────────────
+  function init_auto_theme() {
+    const stored = localStorage.getItem('desk_theme');
+    if (stored === 'automatic' || !stored) {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+    }
+  }
+
+  // Listen for system theme changes
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+    const stored = localStorage.getItem('desk_theme');
+    if (stored === 'automatic' || !stored) {
+      document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+    }
+  });
+
+  // Apply stored theme on load
+  frappe.ready(function () {
+    init_auto_theme();
+  });
+
   // Wait for Frappe desk to be ready
   frappe.ready(function () {
     HyperHex.init();
@@ -19,6 +71,7 @@
   var HyperHex = {
 
     init: function () {
+      this.syncThemeAttribute();
       this.injectFavicon();
       this.styleNavbarBrand();
       this.addHexGridToHome();
@@ -26,7 +79,19 @@
       console.log('%c⬡ HyperHex Theme Loaded', 'color:#00FFB2;font-family:monospace;font-size:12px;');
     },
 
+    // ── Sync theme attribute from Frappe ───────────────────────
+    syncThemeAttribute: function () {
+      const theme = frappe.boot?.theme || localStorage.getItem('desk_theme') || 'dark';
+      if (theme === 'automatic') {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+      } else {
+        document.documentElement.setAttribute('data-theme', theme);
+      }
+    },
+
     onPageChange: function () {
+      this.syncThemeAttribute();
       this.addPageEntryAnimation();
       this.styleStatusBadges();
       this.enhanceFormHead();
