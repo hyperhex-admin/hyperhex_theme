@@ -76,8 +76,8 @@
    ============================================================ */
 [data-theme="light"] {
   /* Single accent color - Blue */
-  --hx-green:        #2563EB;
-  --hx-green-dim:    #1D4ED8;
+  --hx-green:        #4071dbd2;
+  --hx-green-dim:    #1d4fd8d0;
   --hx-green-glow:   rgba(37, 99, 235, 0.15);
   --hx-green-border: rgba(37, 99, 235, 0.3);
 
@@ -99,10 +99,10 @@
   --hx-text-faint:   #64748B;
 
   /* Status - Single blue theme */
-  --hx-success:      #2563EB;
-  --hx-warning:      #2563EB;
-  --hx-danger:       #2563EB;
-  --hx-info:         #2563EB;
+  --hx-success:      #4071dbd2;
+  --hx-warning:      #4071dbd2;
+  --hx-danger:       #4071dbd2;
+  --hx-info:         #4071dbd2;
 
   /* Frappe v15 overrides */
   --primary:              var(--hx-green);
@@ -190,14 +190,14 @@
 [data-theme="light"] .standard-sidebar a:hover {
   background: #CBD5E1 !important;
   color: #0F172A !important;
-  border-left-color: #2563EB !important;
+  border-left-color: #4071dbd2 !important;
 }
 [data-theme="light"] .desk-sidebar .sidebar-item.selected,
 [data-theme="light"] .desk-sidebar .sidebar-item.active,
 [data-theme="light"] .standard-sidebar a.active {
   background: #334155 !important;
   color: #FFFFFF !important;
-  border-left-color: #2563EB !important;
+  border-left-color: #4071dbd2 !important;
 }
 
 /* Sidebar group titles */
@@ -224,7 +224,7 @@
   border-color: #CBD5E1 !important;
 }
 [data-theme="light"] .form-control:focus {
-  border-color: #2563EB !important;
+  border-color: #4071dbd2 !important;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
 }
 
@@ -253,12 +253,12 @@
 
 /* Light theme buttons */
 [data-theme="light"] .btn-primary {
-  background: #2563EB !important;
-  border-color: #2563EB !important;
+  background: #4071dbd2 !important;
+  border-color: #4071dbd2 !important;
   color: #FFFFFF !important;
 }
 [data-theme="light"] .btn-primary:hover {
-  background: #1D4ED8 !important;
+  background: #1d4fd8d0 !important;
   box-shadow: 0 0 20px rgba(37, 99, 235, 0.3) !important;
 }
 
@@ -270,19 +270,19 @@
 }
 [data-theme="light"] .btn-secondary:hover,
 [data-theme="light"] .btn-default:hover {
-  border-color: #2563EB !important;
-  color: #2563EB !important;
+  border-color: #4071dbd2 !important;
+  color: #4071dbd2 !important;
   background: #CBD5E1 !important;
 }
 
 [data-theme="light"] .btn-success {
-  background: #2563EB !important;
-  border-color: #2563EB !important;
+  background: #4071dbd2 !important;
+  border-color: #4071dbd2 !important;
 }
 
 [data-theme="light"] .btn-warning {
-  background: #2563EB !important;
-  border-color: #2563EB !important;
+  background: #4071dbd2 !important;
+  border-color: #4071dbd2 !important;
   color: #FFFFFF !important;
 }
 
@@ -299,7 +299,7 @@
   color: #475569 !important;
 }
 [data-theme="light"] .breadcrumb-item.active {
-  color: #2563EB !important;
+  color: #4071dbd2 !important;
 }
 
 /* Light theme sidebar selected/active */
@@ -308,7 +308,7 @@
 [data-theme="light"] .standard-sidebar a.active {
   background: #334155 !important;
   color: #FFFFFF !important;
-  border-left-color: #2563EB !important;
+  border-left-color: #4071dbd2 !important;
 }
 
 /* Light theme indicator badges - all blue */
@@ -321,14 +321,14 @@
 [data-theme="light"] .indicator.red,
 [data-theme="light"] .indicator-pill.red {
   background: rgba(37, 99, 235, .15) !important;
-  color: #2563EB !important;
+  color: #4071dbd2 !important;
   border-color: rgba(37, 99, 235, .3) !important;
 }
 
 /* Light theme module tiles hover */
 [data-theme="light"] .modules-section .desk-link:hover,
 [data-theme="light"] .modules-section .module-icon:hover {
-  border-color: #2563EB !important;
+  border-color: #4071dbd2 !important;
   box-shadow: 0 0 20px rgba(37, 99, 235, 0.2) !important;
 }
 
