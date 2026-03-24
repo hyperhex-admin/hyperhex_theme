@@ -7,9 +7,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Barlow:wght@300;400;500;600;700&display=swap');
 
 /* ============================================================
-   1. CSS DESIGN TOKENS — Override Frappe Bootstrap 5 vars
-   ============================================================ */
-:root {
+    1. CSS DESIGN TOKENS — Override Frappe Bootstrap 5 vars
+    ============================================================ */
+
+/* Default: Dark theme (when no data-theme attribute or data-theme="dark") */
+:root,
+[data-theme="dark"] {
   /* Brand */
   --hx-green:        #00FFB2;
   --hx-green-dim:    #00c887;
@@ -128,16 +131,28 @@
 /* Light theme scrollbar */
 [data-theme="light"] * {
   scrollbar-width: thin;
-  scrollbar-color: var(--hx-border-mid) var(--hx-bg-surface);
+  scrollbar-color: #B8BFC9 #FFFFFF;
 }
 [data-theme="light"] ::-webkit-scrollbar { width: 6px; height: 6px; }
-[data-theme="light"] ::-webkit-scrollbar-track { background: var(--hx-bg-surface); }
-[data-theme="light"] ::-webkit-scrollbar-thumb { background: var(--hx-border-mid); border-radius: 3px; }
-[data-theme="light"] ::-webkit-scrollbar-thumb:hover { background: var(--hx-text-muted); }
+[data-theme="light"] ::-webkit-scrollbar-track { background: #FFFFFF; }
+[data-theme="light"] ::-webkit-scrollbar-thumb { background: #B8BFC9; border-radius: 3px; }
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover { background: #6B7280; }
+
+/* Light theme explicit background */
+[data-theme="light"] body,
+[data-theme="light"] html {
+  background-color: #F0F2F5 !important;
+}
 
 /* Light theme modal backdrop */
 [data-theme="light"] .modal-backdrop {
   background: rgba(240, 242, 245, 0.85) !important;
+}
+
+/* Dark theme explicit background */
+[data-theme="dark"] body,
+[data-theme="dark"] html {
+  background-color: #060A0F !important;
 }
 
 /* ============================================================
@@ -151,15 +166,15 @@ html {
   font-weight: 400;
 }
 
-/* Scrollbars */
+/* Scrollbars - Dark theme (default) */
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--hx-border-mid) var(--hx-bg-surface);
+  scrollbar-color: #253545 #0C1219;
 }
 ::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: var(--hx-bg-surface); }
-::-webkit-scrollbar-thumb { background: var(--hx-border-mid); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--hx-text-muted); }
+::-webkit-scrollbar-track { background: #0C1219; }
+::-webkit-scrollbar-thumb { background: #253545; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #5A7080; }
 
 /* ============================================================
    3. NAVBAR / TOP BAR
@@ -843,6 +858,24 @@ body.login-page,
 .login-content .page-card-body .btn-primary {
   clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%) !important;
   letter-spacing: .15em !important;
+}
+
+/* Light theme login page */
+[data-theme="light"] body.login-page,
+[data-theme="light"] .for-login {
+  background: #F0F2F5 !important;
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(0,204,142,0.08) 0%, transparent 60%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 60 52' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='30,2 58,17 58,35 30,50 2,35 2,17' fill='none' stroke='%2300CC8E' stroke-width='.4' opacity='.12'/%3E%3C/svg%3E") !important;
+  background-size: auto, 60px 52px !important;
+}
+[data-theme="light"] .login-content,
+[data-theme="light"] .page-card {
+  box-shadow: 0 20px 60px rgba(0,0,0,.15) !important;
+}
+[data-theme="light"] .login-content h1,
+[data-theme="light"] .page-card h4.title {
+  color: #1A1D24 !important;
 }
 
 /* ============================================================
