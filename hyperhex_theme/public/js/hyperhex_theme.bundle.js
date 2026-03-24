@@ -27,13 +27,12 @@
       });
     };
 
-    // Override toggle_theme - this is called when user selects a theme
+    // Override toggle_theme - called when user selects a theme
     frappe.ui.ThemeSwitcher.prototype.toggle_theme = function(theme) {
-      console.log('HyperHex toggle_theme called:', theme);
       theme = theme.toLowerCase();
       this.current_theme = theme;
       
-      // Set both data-theme-mode and data-theme
+      // Set both attributes
       document.documentElement.setAttribute("data-theme-mode", theme);
       document.documentElement.setAttribute("data-theme", theme);
       
@@ -41,7 +40,7 @@
       localStorage.setItem('desk_theme', theme);
       
       // Show alert
-      frappe.show_alert(__("Theme Changed to " + theme), 3);
+      frappe.show_alert(__("Theme Changed"), 3);
 
       // Call backend API
       frappe.xcall("hyperhex_theme.overrides.switch_theme.switch_theme", {
@@ -59,78 +58,30 @@
     patchThemeSwitcher();
   }
 
-  // ── Override frappe.ui.set_theme ─────────────────────────────
-  function patchSetTheme() {
-    if (typeof frappe === 'undefined' || !frappe.ui) {
-      setTimeout(patchSetTheme, 100);
-      return;
-    }
-
-    var originalSetTheme = frappe.ui.set_theme;
-    
-    frappe.ui.set_theme = function(theme) {
-      var root = document.documentElement;
-      var theme_mode = root.getAttribute("data-theme-mode") || 'dark';
-      
-      if (!theme) {
-        if (theme_mode === "automatic") {
-          theme = frappe.ui.dark_theme_media_query.matches ? "dark" : "light";
-        }
-      }
-      
-      // Set both attributes
-      root.setAttribute("data-theme-mode", theme || theme_mode);
-      root.setAttribute("data-theme", theme || theme_mode);
-    };
-
-    console.log('HyperHex frappe.ui.set_theme patched');
-  }
-
-  // Start patching
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', patchSetTheme);
-  } else {
-    patchSetTheme();
-  }
-
   // ── Automatic theme detection ───────────────────────────────
   function init_auto_theme() {
     var stored = localStorage.getItem('desk_theme');
-    var theme_mode = document.documentElement.getAttribute('data-theme-mode') || stored || 'dark';
+    var theme_mode = document.documentElement.getAttribute('data-theme-mode');
     
-    console.log('init_auto_theme - stored:', stored, 'theme_mode:', theme_mode);
-    
-    if (theme_mode === 'automatic' || !stored) {
-      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      var autoTheme = prefersDark ? 'dark' : 'light';
-      document.documentElement.setAttribute('data-theme', autoTheme);
-      document.documentElement.setAttribute('data-theme-mode', theme_mode);
-    } else {
+    // If user has a stored preference, use it
+    if (stored) {
       document.documentElement.setAttribute('data-theme', stored);
       document.documentElement.setAttribute('data-theme-mode', stored);
+    } else if (theme_mode === 'automatic') {
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
     }
   }
 
   // Listen for system theme changes
-  if (typeof frappe !== 'undefined' && frappe.ui && frappe.ui.dark_theme_media_query) {
-    frappe.ui.dark_theme_media_query.addEventListener('change', function(e) {
-      var theme_mode = document.documentElement.getAttribute('data-theme-mode');
-      if (theme_mode === 'automatic') {
-        var newTheme = e.matches ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', newTheme);
-      }
-    });
-  }
-
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
     var theme_mode = document.documentElement.getAttribute('data-theme-mode');
     if (theme_mode === 'automatic') {
-      var newTheme = e.matches ? 'dark' : 'light';
-      document.documentElement.setAttribute('data-theme', newTheme);
+      document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
     }
   });
 
-  // Apply stored theme on load
+  // Apply on load
   function initApp() {
     init_auto_theme();
     HyperHex.init();
@@ -153,7 +104,7 @@
       this.styleNavbarBrand();
       this.addHexGridToHome();
       this.onPageChange();
-      console.log('%c⬡ HyperHex Theme Loaded', 'color:#00FFB2;font-family:monospace;font-size:12px;');
+      console.log('%c HyperHex Theme Loaded', 'color:#00FFB2;font-family:monospace;font-size:12px;');
     },
 
     onPageChange: function () {
