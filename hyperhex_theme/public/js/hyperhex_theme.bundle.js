@@ -7,52 +7,70 @@
   'use strict';
 
   // ── Theme Switcher Override ──────────────────────────────────
-  frappe.ui.ThemeSwitcher = class HyperHexThemeSwitcher extends frappe.ui.ThemeSwitcher {
-    constructor() {
-      super();
+  // Wait for frappe.ui.ThemeSwitcher to be available, then patch it
+  function patchThemeSwitcher() {
+    if (typeof frappe === 'undefined' || !frappe.ui || !frappe.ui.ThemeSwitcher) {
+      setTimeout(patchThemeSwitcher, 100);
+      return;
     }
 
-    fetch_themes() {
-      return new Promise((resolve) => {
-        this.themes = [
+    var OriginalThemeSwitcher = frappe.ui.ThemeSwitcher;
+
+    frappe.ui.ThemeSwitcher = function() {
+      OriginalThemeSwitcher.call(this);
+    };
+
+    frappe.ui.ThemeSwitcher.prototype = Object.create(OriginalThemeSwitcher.prototype);
+    frappe.ui.ThemeSwitcher.prototype.constructor = frappe.ui.ThemeSwitcher;
+
+    frappe.ui.ThemeSwitcher.prototype.fetch_themes = function() {
+      var me = this;
+      return new Promise(function(resolve) {
+        me.themes = [
           { name: "light", label: "HyperHex Light", info: "Industrial Light Theme" },
           { name: "dark", label: "HyperHex Dark", info: "Industrial Dark Theme" },
           { name: "automatic", label: "Automatic", info: "Follows system preference" }
         ];
-        this.current_theme = localStorage.getItem('desk_theme') || frappe.boot?.theme || 'dark';
-        resolve(this.themes);
+        me.current_theme = localStorage.getItem('desk_theme') || frappe.boot?.theme || 'dark';
+        resolve(me.themes);
       });
-    }
+    };
 
-    set_theme(theme) {
+    frappe.ui.ThemeSwitcher.prototype.set_theme = function(theme) {
       console.log('HyperHex set_theme called:', theme);
       localStorage.setItem('desk_theme', theme);
-      
+
       frappe.call({
         method: "hyperhex_theme.overrides.switch_theme.switch_theme",
         args: { theme: theme }
       });
 
-      this.apply_theme(theme);
-      super.set_theme(theme);
-    }
-
-    apply_theme(theme) {
-      console.log('HyperHex apply_theme:', theme);
       if (theme === 'automatic') {
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
       } else {
         document.documentElement.setAttribute('data-theme', theme);
       }
-    }
-  };
+
+      // Call original set_theme
+      OriginalThemeSwitcher.prototype.set_theme.call(this, theme);
+    };
+
+    console.log('HyperHex ThemeSwitcher patched');
+  }
+
+  // Start patching when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', patchThemeSwitcher);
+  } else {
+    patchThemeSwitcher();
+  }
 
   // ── Automatic theme detection ───────────────────────────────
   function init_auto_theme() {
-    const stored = localStorage.getItem('desk_theme');
+    var stored = localStorage.getItem('desk_theme');
     if (stored === 'automatic' || !stored) {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
     } else {
       document.documentElement.setAttribute('data-theme', stored);
@@ -60,29 +78,22 @@
   }
 
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
-    const stored = localStorage.getItem('desk_theme');
+    var stored = localStorage.getItem('desk_theme');
     if (stored === 'automatic' || !stored) {
       document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
     }
   });
 
   // Apply stored theme on load and init HyperHex
-  frappe.init && frappe.init(function() {
+  function initApp() {
     init_auto_theme();
     HyperHex.init();
-  });
+  }
 
-  document.addEventListener('DOMContentLoaded', function() {
-    init_auto_theme();
-    HyperHex.init();
-  });
-
-  // Fallback if frappe.init already fired
-  if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    setTimeout(function() {
-      init_auto_theme();
-      HyperHex.init();
-    }, 100);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApp);
+  } else {
+    initApp();
   }
 
   $(document).on('page-change', function () {
@@ -101,9 +112,9 @@
     },
 
     syncThemeAttribute: function () {
-      const theme = localStorage.getItem('desk_theme') || frappe.boot?.theme || 'dark';
+      var theme = localStorage.getItem('desk_theme') || frappe.boot?.theme || 'dark';
       if (theme === 'automatic') {
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
       } else {
         document.documentElement.setAttribute('data-theme', theme);
@@ -197,19 +208,11 @@
   };
 
   var style = document.createElement('style');
-  style.textContent = `
-    @keyframes hx-pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: .6; }
-    }
-    .hx-module-fadein {
-      animation: hx-fadein .4s ease both;
-    }
-    @keyframes hx-fadein {
-      from { opacity: 0; transform: translateY(8px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-  `;
+  style.textContent = [
+    '@keyframes hx-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .6; } }',
+    '.hx-module-fadein { animation: hx-fadein .4s ease both; }',
+    '@keyframes hx-fadein { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }'
+  ].join('\n');
   document.head.appendChild(style);
 
 })();
