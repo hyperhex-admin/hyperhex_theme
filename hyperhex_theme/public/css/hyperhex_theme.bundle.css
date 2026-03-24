@@ -179,14 +179,14 @@
 [data-theme="light"] .standard-sidebar a:hover {
   background: #C5DBE8 !important;
   color: #1E3A5F !important;
-  border-left-color: #3B82F6 !important;
+  border-left-color: #000000 !important;
 }
 [data-theme="light"] .desk-sidebar .sidebar-item.selected,
 [data-theme="light"] .desk-sidebar .sidebar-item.active,
 [data-theme="light"] .standard-sidebar a.active {
   background: #D1E8F5 !important;
-  color: #3B82F6 !important;
-  border-left-color: #3B82F6 !important;
+  color: #000000 !important;;
+  border-left-color: #000000 !important;;
 }
 
 /* Cards - white for contrast */
@@ -207,13 +207,13 @@
   border-color: #B8D4E8 !important;
 }
 [data-theme="light"] .form-control:focus {
-  border-color: #3B82F6 !important;
+  border-color: #000000 !important;;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
 }
 
 /* Light theme colorful links */
 [data-theme="light"] a {
-  color: #3B82F6 !important;
+  color: #000000 !important;;
 }
 [data-theme="light"] a:hover {
   color: #1D4ED8 !important;
@@ -221,8 +221,8 @@
 
 /* Light theme buttons - more colorful */
 [data-theme="light"] .btn-primary {
-  background: #3B82F6 !important;
-  border-color: #3B82F6 !important;
+  background: #000000 !important;;
+  border-color: #000000 !important;;
   color: #FFFFFF !important;
 }
 [data-theme="light"] .btn-primary:hover {
@@ -238,8 +238,8 @@
 }
 [data-theme="light"] .btn-secondary:hover,
 [data-theme="light"] .btn-default:hover {
-  border-color: #3B82F6 !important;
-  color: #3B82F6 !important;
+  border-color: #000000 !important;;
+  color: #000000 !important;;
   background: #D1E8F5 !important;
 }
 
@@ -263,11 +263,11 @@
 /* Light theme navbar links */
 [data-theme="light"] .navbar .nav-link:hover,
 [data-theme="light"] .navbar .nav-item > a:hover {
-  color: #3B82F6 !important;
+  color: #000000 !important;;
 }
 
 [data-theme="light"] .breadcrumb-item.active {
-  color: #3B82F6 !important;
+  color: #000000 !important;;
 }
 
 /* Light theme sidebar selected/active - blue instead of green */
@@ -275,8 +275,8 @@
 [data-theme="light"] .desk-sidebar .sidebar-item.active,
 [data-theme="light"] .standard-sidebar a.active {
   background: #D1E8F5 !important;
-  color: #3B82F6 !important;
-  border-left-color: #3B82F6 !important;
+  color: #000000 !important;;
+  border-left-color: #000000 !important;;
 }
 
 /* Light theme indicator badges */
@@ -289,14 +289,14 @@
 [data-theme="light"] .indicator.blue,
 [data-theme="light"] .indicator-pill.blue {
   background: rgba(59, 130, 246, .15) !important;
-  color: #3B82F6 !important;
+  color: #000000 !important;;
   border-color: rgba(59, 130, 246, .3) !important;
 }
 
 /* Light theme module tiles hover */
 [data-theme="light"] .modules-section .desk-link:hover,
 [data-theme="light"] .modules-section .module-icon:hover {
-  border-color: #3B82F6 !important;
+  border-color: #000000 !important;;
   box-shadow: 0 0 20px rgba(59, 130, 246, 0.2) !important;
 }
 
