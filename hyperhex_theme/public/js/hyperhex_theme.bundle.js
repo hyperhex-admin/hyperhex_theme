@@ -7,27 +7,24 @@
   'use strict';
 
   // ── Theme Switcher Override ──────────────────────────────────
-  // Extend Frappe's ThemeSwitcher and override fetch_themes to return Promise
   frappe.ui.ThemeSwitcher = class HyperHexThemeSwitcher extends frappe.ui.ThemeSwitcher {
     constructor() {
       super();
     }
 
     fetch_themes() {
-      var me = this;
-      return new Promise(function (resolve) {
-        me.themes = [
+      return new Promise((resolve) => {
+        this.themes = [
           { name: "light", label: "HyperHex Light", info: "Industrial Light Theme" },
           { name: "dark", label: "HyperHex Dark", info: "Industrial Dark Theme" },
           { name: "automatic", label: "Automatic", info: "Follows system preference" }
         ];
-        me.current_theme = localStorage.getItem('desk_theme') || frappe.boot?.theme || 'dark';
-        resolve();
+        this.current_theme = localStorage.getItem('desk_theme') || frappe.boot?.theme || 'dark';
+        resolve(this.themes);
       });
     }
 
     set_theme(theme) {
-      var me = this;
       localStorage.setItem('desk_theme', theme);
       
       frappe.call({
@@ -63,10 +60,23 @@
   });
 
   // Apply stored theme on load and init HyperHex
-  frappe.ready(function () {
+  frappe.init && frappe.init(function() {
     init_auto_theme();
     HyperHex.init();
   });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    init_auto_theme();
+    HyperHex.init();
+  });
+
+  // Fallback if frappe.init already fired
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    setTimeout(function() {
+      init_auto_theme();
+      HyperHex.init();
+    }, 100);
+  }
 
   $(document).on('page-change', function () {
     HyperHex.onPageChange();
