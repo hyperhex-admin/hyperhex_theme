@@ -6,9 +6,91 @@
 (function () {
   'use strict';
 
-  // Wait for Frappe desk to be ready
+  // ── Theme Switcher Override ──────────────────────────────────
+  // Extends Frappe's built-in ThemeSwitcher to add HyperHex themes
+  // to the avatar menu → Toggle Theme modal
+  frappe.ui.ThemeSwitcher = class HyperHexThemeSwitcher extends frappe.ui.ThemeSwitcher {
+    constructor() {
+      super();
+      this.fetch_themes();
+    }
+
+    fetch_themes() {
+      this.themes = [
+        {
+          name: "light",
+          label: "HyperHex Light",
+          info: "Industrial Light Theme"
+        },
+        {
+          name: "dark",
+          label: "HyperHex Dark",
+          info: "Industrial Dark Theme"
+        },
+        {
+          name: "automatic",
+          label: "Automatic",
+          info: "Follows system preference"
+        }
+      ];
+      this.current_theme = this.get_theme();
+    }
+
+    get_theme() {
+      return localStorage.getItem('desk_theme') || frappe.boot?.theme || 'dark';
+    }
+
+    select_theme(theme) {
+      var me = this;
+      localStorage.setItem('desk_theme', theme);
+      
+      frappe.call({
+        method: "hyperhex_theme.overrides.switch_theme.switch_theme",
+        args: { theme: theme },
+        callback: function(r) {
+          if (r.message) {
+            frappe.show_alert(__("Theme changed to {0}", [r.message.theme === 'automatic' ? 'Automatic' : r.message.theme === 'dark' ? 'HyperHex Dark' : 'HyperHex Light']));
+          }
+        }
+      });
+
+      this.apply_theme(theme);
+      this.dialog && this.dialog.hide();
+    }
+
+    apply_theme(theme) {
+      if (theme === 'automatic') {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+      } else {
+        document.documentElement.setAttribute('data-theme', theme);
+      }
+      this.current_theme = theme;
+    }
+  };
+
+  // ── Automatic theme detection ───────────────────────────────
+  function init_auto_theme() {
+    const stored = localStorage.getItem('desk_theme');
+    if (stored === 'automatic' || !stored) {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+    } else {
+      document.documentElement.setAttribute('data-theme', stored);
+    }
+  }
+
+  // Listen for system theme changes
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+    const stored = localStorage.getItem('desk_theme');
+    if (stored === 'automatic' || !stored) {
+      document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+    }
+  });
+
+  // Apply stored theme on load
   frappe.ready(function () {
-    HyperHex.init();
+    init_auto_theme();
   });
 
   // Also run after every page load (Frappe is an SPA)
@@ -19,6 +101,7 @@
   var HyperHex = {
 
     init: function () {
+      this.syncThemeAttribute();
       this.injectFavicon();
       this.styleNavbarBrand();
       this.addHexGridToHome();
@@ -26,7 +109,19 @@
       console.log('%c⬡ HyperHex Theme Loaded', 'color:#00FFB2;font-family:monospace;font-size:12px;');
     },
 
+    // ── Sync theme attribute from Frappe ───────────────────────
+    syncThemeAttribute: function () {
+      const theme = localStorage.getItem('desk_theme') || frappe.boot?.theme || 'dark';
+      if (theme === 'automatic') {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+      } else {
+        document.documentElement.setAttribute('data-theme', theme);
+      }
+    },
+
     onPageChange: function () {
+      this.syncThemeAttribute();
       this.addPageEntryAnimation();
       this.styleStatusBadges();
       this.enhanceFormHead();
@@ -48,7 +143,6 @@
     styleNavbarBrand: function () {
       var brand = document.querySelector('.navbar-brand');
       if (brand && brand.textContent.trim()) {
-        // Wrap brand in styled span if not already done
         if (!brand.querySelector('.hx-brand')) {
           var text = brand.textContent.trim();
           brand.innerHTML = '<span class="hx-brand" style="font-family:\'Bebas Neue\',sans-serif;letter-spacing:.1em;font-size:1.4rem;color:#EEF4FA;">' + text + '</span>';
@@ -58,8 +152,6 @@
 
     // ── Hex grid on the desk home page ───────────────────────
     addHexGridToHome: function () {
-      // Already handled via CSS .desk-page background-image
-      // This adds a subtle animated pulse to the home modules
       var modules = document.querySelectorAll('.desk-link, .module-icon');
       modules.forEach(function (el, i) {
         el.style.animationDelay = (i * 40) + 'ms';
@@ -85,8 +177,6 @@
 
     // ── Style status badges ───────────────────────────────────
     styleStatusBadges: function () {
-      // Frappe uses indicator-pill with color classes
-      // CSS handles most of this — JS adds pulse to "In Progress" states
       var inProgress = document.querySelectorAll('.indicator-pill.orange, .indicator-pill.yellow');
       inProgress.forEach(function (el) {
         el.style.animation = 'hx-pulse 2s ease-in-out infinite';
@@ -98,7 +188,6 @@
       var formHead = document.querySelector('.form-page .page-head');
       if (formHead && !formHead.classList.contains('hx-enhanced')) {
         formHead.classList.add('hx-enhanced');
-        // Status label in mono font
         var statusLabel = formHead.querySelector('.indicator-pill');
         if (statusLabel) {
           statusLabel.style.fontFamily = "'DM Mono', monospace";

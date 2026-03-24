@@ -12,6 +12,7 @@
   frappe.ui.ThemeSwitcher = class HyperHexThemeSwitcher extends frappe.ui.ThemeSwitcher {
     constructor() {
       super();
+      this.fetch_themes();
     }
 
     fetch_themes() {
@@ -34,6 +35,38 @@
       ];
       this.current_theme = this.get_theme();
     }
+
+    get_theme() {
+      return localStorage.getItem('desk_theme') || frappe.boot?.theme || 'dark';
+    }
+
+    select_theme(theme) {
+      var me = this;
+      localStorage.setItem('desk_theme', theme);
+      
+      frappe.call({
+        method: "hyperhex_theme.overrides.switch_theme.switch_theme",
+        args: { theme: theme },
+        callback: function(r) {
+          if (r.message) {
+            frappe.show_alert(__("Theme changed to {0}", [r.message.theme === 'automatic' ? 'Automatic' : r.message.theme === 'dark' ? 'HyperHex Dark' : 'HyperHex Light']));
+          }
+        }
+      });
+
+      this.apply_theme(theme);
+      this.dialog && this.dialog.hide();
+    }
+
+    apply_theme(theme) {
+      if (theme === 'automatic') {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+      } else {
+        document.documentElement.setAttribute('data-theme', theme);
+      }
+      this.current_theme = theme;
+    }
   };
 
   // ── Automatic theme detection ───────────────────────────────
@@ -42,6 +75,8 @@
     if (stored === 'automatic' || !stored) {
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+    } else {
+      document.documentElement.setAttribute('data-theme', stored);
     }
   }
 
@@ -53,13 +88,9 @@
     }
   });
 
-  // Apply stored theme on load
+  // Apply stored theme on load and init HyperHex
   frappe.ready(function () {
     init_auto_theme();
-  });
-
-  // Wait for Frappe desk to be ready
-  frappe.ready(function () {
     HyperHex.init();
   });
 
@@ -81,7 +112,7 @@
 
     // ── Sync theme attribute from Frappe ───────────────────────
     syncThemeAttribute: function () {
-      const theme = frappe.boot?.theme || localStorage.getItem('desk_theme') || 'dark';
+      const theme = localStorage.getItem('desk_theme') || frappe.boot?.theme || 'dark';
       if (theme === 'automatic') {
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
