@@ -34,6 +34,7 @@
     frappe.ui.ThemeSwitcher.prototype.set_theme = function(theme) {
       console.log('HyperHex set_theme called:', theme);
       localStorage.setItem('desk_theme', theme);
+      console.log('Saved to localStorage, now:', localStorage.getItem('desk_theme'));
 
       frappe.call({
         method: "hyperhex_theme.overrides.switch_theme.switch_theme",
@@ -46,6 +47,7 @@
       } else {
         document.documentElement.setAttribute('data-theme', theme);
       }
+      console.log('data-theme set to:', document.documentElement.getAttribute('data-theme'));
 
       // Call original set_theme if it exists
       if (OriginalThemeSwitcher.prototype.set_theme) {
@@ -66,12 +68,15 @@
   // ── Automatic theme detection ───────────────────────────────
   function init_auto_theme() {
     var stored = localStorage.getItem('desk_theme');
+    console.log('init_auto_theme - stored:', stored);
+    console.log('init_auto_theme - frappe.boot.theme:', frappe.boot?.theme);
     if (stored === 'automatic' || !stored) {
       var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
     } else {
       document.documentElement.setAttribute('data-theme', stored);
     }
+    console.log('data-theme attribute:', document.documentElement.getAttribute('data-theme'));
   }
 
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
@@ -110,6 +115,7 @@
 
     syncThemeAttribute: function () {
       var theme = localStorage.getItem('desk_theme') || frappe.boot?.theme || 'dark';
+      console.log('syncThemeAttribute - theme:', theme);
       if (theme === 'automatic') {
         var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
