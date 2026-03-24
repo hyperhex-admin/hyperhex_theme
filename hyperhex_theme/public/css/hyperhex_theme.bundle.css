@@ -75,43 +75,38 @@
    1B. LIGHT THEME — Override vars when [data-theme="light"]
    ============================================================ */
 [data-theme="light"] {
-  /* Brand - More colorful for light theme */
-  --hx-green:        #0D9488;
-  --hx-green-dim:    #0F766E;
-  --hx-green-glow:   rgba(13, 148, 136, 0.15);
-  --hx-green-border: rgba(13, 148, 136, 0.3);
+  /* Single accent color - Blue */
+  --hx-green:        #2563EB;
+  --hx-green-dim:    #1D4ED8;
+  --hx-green-glow:   rgba(37, 99, 235, 0.15);
+  --hx-green-border: rgba(37, 99, 235, 0.3);
 
-  /* Additional accent colors for light theme */
-  --hx-blue:        #3B82F6;
-  --hx-purple:     #8B5CF6;
-  --hx-orange:     #F97316;
-
-  /* Backgrounds — Light blue tint */
-  --hx-bg-base:      #F0F4F8;
-  --hx-bg-surface:   #E0EBF5;
+  /* Backgrounds — Slate blue-gray */
+  --hx-bg-base:      #F1F5F9;
+  --hx-bg-surface:   #E2E8F0;
   --hx-bg-elevated:  #FFFFFF;
-  --hx-bg-hover:     #D1E3F0;
-  --hx-bg-active:    #C5DBE8;
+  --hx-bg-hover:     #CBD5E1;
+  --hx-bg-active:    #94A3B8;
 
   /* Borders */
-  --hx-border:       #B8D4E8;
-  --hx-border-mid:   #9CC5DB;
+  --hx-border:       #CBD5E1;
+  --hx-border-mid:   #94A3B8;
 
-  /* Text — Dark with color variety */
-  --hx-text-primary: #1E3A5F;
+  /* Text — Dark slate */
+  --hx-text-primary: #1E293B;
   --hx-text-body:    #334155;
   --hx-text-muted:   #64748B;
   --hx-text-faint:   #94A3B8;
 
-  /* Status */
-  --hx-success:      #10B981;
-  --hx-warning:      #F59E0B;
-  --hx-danger:       #EF4444;
-  --hx-info:         #3B82F6;
+  /* Status - Single blue theme */
+  --hx-success:      #2563EB;
+  --hx-warning:      #2563EB;
+  --hx-danger:       #2563EB;
+  --hx-info:         #2563EB;
 
   /* Frappe v15 overrides */
-  --primary:              var(--hx-blue);
-  --primary-color:        var(--hx-blue);
+  --primary:              var(--hx-green);
+  --primary-color:        var(--hx-green);
   --sidebar-bg:           var(--hx-bg-surface);
   --navbar-bg:            var(--hx-bg-surface);
   --body-bg:              var(--hx-bg-base);
@@ -121,12 +116,12 @@
   --text-muted:           var(--hx-text-muted);
   --heading-color:        var(--hx-text-primary);
   --border-color:         var(--hx-border);
-  --btn-primary-bg:       var(--hx-blue);
+  --btn-primary-bg:       var(--hx-green);
   --btn-primary-color:    #fff;
   --input-bg:             var(--hx-bg-elevated);
   --input-border-color:   var(--hx-border);
-  --input-focus-border:   var(--hx-blue);
-  --link-color:           var(--hx-blue);
+  --input-focus-border:   var(--hx-green);
+  --link-color:           var(--hx-green);
   --modal-bg:             var(--hx-bg-elevated);
   --popover-bg:           var(--hx-bg-elevated);
   --table-border-color:   var(--hx-border);
@@ -136,57 +131,79 @@
 /* Light theme scrollbar */
 [data-theme="light"] * {
   scrollbar-width: thin;
-  scrollbar-color: #9CC5DB #E0EBF5;
+  scrollbar-color: #94A3B8 #E2E8F0;
 }
 [data-theme="light"] ::-webkit-scrollbar { width: 6px; height: 6px; }
-[data-theme="light"] ::-webkit-scrollbar-track { background: #E0EBF5; }
-[data-theme="light"] ::-webkit-scrollbar-thumb { background: #9CC5DB; border-radius: 3px; }
+[data-theme="light"] ::-webkit-scrollbar-track { background: #E2E8F0; }
+[data-theme="light"] ::-webkit-scrollbar-thumb { background: #94A3B8; border-radius: 3px; }
 [data-theme="light"] ::-webkit-scrollbar-thumb:hover { background: #64748B; }
 
 /* Light theme explicit background */
 [data-theme="light"] body,
 [data-theme="light"] html {
-  background-color: #F0F4F8 !important;
+  background-color: #F1F5F9 !important;
 }
 
 /* Light theme modal backdrop */
 [data-theme="light"] .modal-backdrop {
-  background: rgba(224, 235, 245, 0.85) !important;
+  background: rgba(241, 245, 249, 0.85) !important;
 }
 
 /* ============================================================
    LIGHT THEME SPECIFIC OVERRIDES
    ============================================================ */
 
-/* Navbar - Light blue */
+/* Navbar - Dark slate */
 [data-theme="light"] .navbar,
 [data-theme="light"] .navbar.navbar-expand {
-  background: #D1E8F5 !important;
-  border-bottom: 1px solid #B8D4E8 !important;
+  background: #334155 !important;
+  border-bottom: 1px solid #475569 !important;
 }
 
-/* Sidebar - Slightly different blue */
+/* Navbar text - white on dark navbar */
+[data-theme="light"] .navbar .navbar-brand {
+  color: #F8FAFC !important;
+}
+[data-theme="light"] .navbar .nav-link,
+[data-theme="light"] .navbar .nav-item > a {
+  color: #CBD5E1 !important;
+}
+[data-theme="light"] .navbar .nav-link:hover {
+  color: #FFFFFF !important;
+}
+
+/* Sidebar - Darker slate */
 [data-theme="light"] .layout-side-section,
 [data-theme="light"] .sidebar-column,
 [data-theme="light"] .desk-sidebar,
 [data-theme="light"] .standard-sidebar {
-  background: #E0EBF5 !important;
-  border-right: 1px solid #B8D4E8 !important;
+  background: #E2E8F0 !important;
+  border-right: 1px solid #CBD5E1 !important;
 }
 
-/* Sidebar items - different hover/active for light */
+/* Sidebar items */
+[data-theme="light"] .desk-sidebar .sidebar-item,
+[data-theme="light"] .standard-sidebar a {
+  color: #475569 !important;
+}
 [data-theme="light"] .desk-sidebar .sidebar-item:hover,
 [data-theme="light"] .standard-sidebar a:hover {
-  background: #C5DBE8 !important;
-  color: #1E3A5F !important;
-  border-left-color: #3B82F6 !important;
+  background: #CBD5E1 !important;
+  color: #1E293B !important;
+  border-left-color: #2563EB !important;
 }
 [data-theme="light"] .desk-sidebar .sidebar-item.selected,
 [data-theme="light"] .desk-sidebar .sidebar-item.active,
 [data-theme="light"] .standard-sidebar a.active {
-  background: #D1E8F5 !important;
-  color: #3B82F6 !important;
-  border-left-color: #3B82F6 !important;
+  background: #334155 !important;
+  color: #FFFFFF !important;
+  border-left-color: #2563EB !important;
+}
+
+/* Sidebar group titles */
+[data-theme="light"] .desk-sidebar .sidebar-group-title,
+[data-theme="light"] .standard-sidebar .sidebar-group-title {
+  color: #64748B !important;
 }
 
 /* Cards - white for contrast */
@@ -195,7 +212,7 @@
 [data-theme="light"] .frappe-card,
 [data-theme="light"] .card {
   background: #FFFFFF !important;
-  border: 1px solid #B8D4E8 !important;
+  border: 1px solid #CBD5E1 !important;
 }
 
 /* Form inputs - white bg */
@@ -204,125 +221,125 @@
 [data-theme="light"] select,
 [data-theme="light"] textarea {
   background: #FFFFFF !important;
-  border-color: #B8D4E8 !important;
+  border-color: #CBD5E1 !important;
 }
 [data-theme="light"] .form-control:focus {
-  border-color: #3B82F6 !important;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
+  border-color: #2563EB !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
 }
 
-/* Light theme colorful links */
+/* Light theme links */
 [data-theme="light"] a {
-  color: #3B82F6 !important;
+  color: #2563EB !important;
 }
 [data-theme="light"] a:hover {
   color: #1D4ED8 !important;
 }
 
-/* Light theme buttons - more colorful */
+/* Light theme buttons */
 [data-theme="light"] .btn-primary {
-  background: #3B82F6 !important;
-  border-color: #3B82F6 !important;
+  background: #2563EB !important;
+  border-color: #2563EB !important;
   color: #FFFFFF !important;
 }
 [data-theme="light"] .btn-primary:hover {
-  background: #2563EB !important;
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3) !important;
+  background: #1D4ED8 !important;
+  box-shadow: 0 0 20px rgba(37, 99, 235, 0.3) !important;
 }
 
 [data-theme="light"] .btn-secondary,
 [data-theme="light"] .btn-default {
-  background: #E0EBF5 !important;
-  border: 1px solid #9CC5DB !important;
+  background: #E2E8F0 !important;
+  border: 1px solid #94A3B8 !important;
   color: #334155 !important;
 }
 [data-theme="light"] .btn-secondary:hover,
 [data-theme="light"] .btn-default:hover {
-  border-color: #3B82F6 !important;
-  color: #3B82F6 !important;
-  background: #D1E8F5 !important;
+  border-color: #2563EB !important;
+  color: #2563EB !important;
+  background: #CBD5E1 !important;
 }
 
 [data-theme="light"] .btn-success {
-  background: #10B981 !important;
-  border-color: #10B981 !important;
+  background: #2563EB !important;
+  border-color: #2563EB !important;
 }
 
 [data-theme="light"] .btn-warning {
-  background: #F59E0B !important;
-  border-color: #F59E0B !important;
+  background: #2563EB !important;
+  border-color: #2563EB !important;
   color: #FFFFFF !important;
 }
 
 [data-theme="light"] .btn-danger {
-  background: #EF4444 !important;
-  border-color: #EF4444 !important;
+  background: #DC2626 !important;
+  border-color: #DC2626 !important;
   color: #FFFFFF !important;
 }
 
-/* Light theme navbar links */
-[data-theme="light"] .navbar .nav-link:hover,
-[data-theme="light"] .navbar .nav-item > a:hover {
-  color: #3B82F6 !important;
-}
+/* Light theme navbar links - already handled above */
 
+/* Light theme breadcrumbs */
+[data-theme="light"] .breadcrumb-item a {
+  color: #64748B !important;
+}
 [data-theme="light"] .breadcrumb-item.active {
-  color: #3B82F6 !important;
+  color: #2563EB !important;
 }
 
-/* Light theme sidebar selected/active - blue instead of green */
+/* Light theme sidebar selected/active */
 [data-theme="light"] .desk-sidebar .sidebar-item.selected,
 [data-theme="light"] .desk-sidebar .sidebar-item.active,
 [data-theme="light"] .standard-sidebar a.active {
-  background: #D1E8F5 !important;
-  color: #3B82F6 !important;
-  border-left-color: #3B82F6 !important;
+  background: #334155 !important;
+  color: #FFFFFF !important;
+  border-left-color: #2563EB !important;
 }
 
-/* Light theme indicator badges */
+/* Light theme indicator badges - all blue */
 [data-theme="light"] .indicator.green,
-[data-theme="light"] .indicator-pill.green {
-  background: rgba(16, 185, 129, .15) !important;
-  color: #10B981 !important;
-  border-color: rgba(16, 185, 129, .3) !important;
-}
+[data-theme="light"] .indicator-pill.green,
 [data-theme="light"] .indicator.blue,
-[data-theme="light"] .indicator-pill.blue {
-  background: rgba(59, 130, 246, .15) !important;
-  color: #3B82F6 !important;
-  border-color: rgba(59, 130, 246, .3) !important;
+[data-theme="light"] .indicator-pill.blue,
+[data-theme="light"] .indicator.yellow,
+[data-theme="light"] .indicator-pill.yellow,
+[data-theme="light"] .indicator.red,
+[data-theme="light"] .indicator-pill.red {
+  background: rgba(37, 99, 235, .15) !important;
+  color: #2563EB !important;
+  border-color: rgba(37, 99, 235, .3) !important;
 }
 
 /* Light theme module tiles hover */
 [data-theme="light"] .modules-section .desk-link:hover,
 [data-theme="light"] .modules-section .module-icon:hover {
-  border-color: #3B82F6 !important;
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.2) !important;
+  border-color: #2563EB !important;
+  box-shadow: 0 0 20px rgba(37, 99, 235, 0.2) !important;
 }
 
 /* Light theme login page */
 [data-theme="light"] body.login-page,
 [data-theme="light"] .for-login {
-  background: #F0F4F8 !important;
+  background: #F1F5F9 !important;
   background-image:
-    radial-gradient(ellipse at 20% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 60%),
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 60 52' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='30,2 58,17 58,35 30,50 2,35 2,17' fill='none' stroke='%233B82F6' stroke-width='.4' opacity='.1'/%3E%3C/svg%3E") !important;
+    radial-gradient(ellipse at 20% 50%, rgba(37, 99, 235, 0.08) 0%, transparent 60%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 60 52' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='30,2 58,17 58,35 30,50 2,35 2,17' fill='none' stroke='%232563EB' stroke-width='.4' opacity='.1'/%3E%3C/svg%3E") !important;
 }
 [data-theme="light"] .login-content,
 [data-theme="light"] .page-card {
-  box-shadow: 0 20px 60px rgba(30, 58, 95, 0.15) !important;
-  border-color: #B8D4E8 !important;
+  box-shadow: 0 20px 60px rgba(30, 41, 59, 0.15) !important;
+  border-color: #CBD5E1 !important;
 }
 [data-theme="light"] .login-content h1,
 [data-theme="light"] .page-card h4.title {
-  color: #1E3A5F !important;
+  color: #1E293B !important;
 }
 
 /* Light theme hex grid */
 [data-theme="light"] .desk-page,
 [data-theme="light"] .modules-page {
   background-image:
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 60 52' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='30,2 58,17 58,35 30,50 2,35 2,17' fill='none' stroke='%233B82F6' stroke-width='.5' opacity='.06'/%3E%3C/svg%3E") !important;
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 60 52' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='30,2 58,17 58,35 30,50 2,35 2,17' fill='none' stroke='%232563EB' stroke-width='.5' opacity='.06'/%3E%3C/svg%3E") !important;
 }
 
 /* Dark theme explicit background */
