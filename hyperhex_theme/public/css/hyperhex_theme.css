@@ -179,14 +179,14 @@
 [data-theme="light"] .standard-sidebar a:hover {
   background: #C5DBE8 !important;
   color: #1E3A5F !important;
-  border-left-color: #000000 !important;;
+  border-left-color: #3B82F6 !important;
 }
 [data-theme="light"] .desk-sidebar .sidebar-item.selected,
 [data-theme="light"] .desk-sidebar .sidebar-item.active,
 [data-theme="light"] .standard-sidebar a.active {
   background: #D1E8F5 !important;
-  color: #000000 !important;;
-  border-left-color: #000000 !important;;
+  color: #1E3A5F !important;
+  border-left-color: #3B82F6 !important;
 }
 
 /* Cards - white for contrast */
@@ -205,15 +205,26 @@
 [data-theme="light"] textarea {
   background: #FFFFFF !important;
   border-color: #B8D4E8 !important;
+  caret-color: #3B82F6 !important;
 }
 [data-theme="light"] .form-control:focus {
-  border-color: #000000 !important;;
+  border-color: #3B82F6 !important;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
+}
+
+/* Light theme checkboxes */
+[data-theme="light"] input[type="checkbox"] {
+  background: #FFFFFF !important;
+  border-color: #9CC5DB !important;
+}
+[data-theme="light"] input[type="checkbox"]:checked {
+  background: #3B82F6 !important;
+  border-color: #3B82F6 !important;
 }
 
 /* Light theme colorful links */
 [data-theme="light"] a {
-  color: #000000 !important;;
+  color: #1E3A5F !important;
 }
 [data-theme="light"] a:hover {
   color: #1D4ED8 !important;
@@ -221,8 +232,8 @@
 
 /* Light theme buttons - more colorful */
 [data-theme="light"] .btn-primary {
-  background: #000000 !important;;
-  border-color: #000000 !important;;
+  background: #1E3A5F !important;
+  border-color: #1E3A5F !important;
   color: #FFFFFF !important;
 }
 [data-theme="light"] .btn-primary:hover {
@@ -238,9 +249,9 @@
 }
 [data-theme="light"] .btn-secondary:hover,
 [data-theme="light"] .btn-default:hover {
-  border-color: #000000 !important;;
-  color: #000000 !important;;
-  background: #D1E8F5 !important;
+  border-color: #1E3A5F !important;
+  color: #1E3A5F !important;
+  background: #D1E3F0 !important;
 }
 
 [data-theme="light"] .btn-success {
@@ -263,11 +274,11 @@
 /* Light theme navbar links */
 [data-theme="light"] .navbar .nav-link:hover,
 [data-theme="light"] .navbar .nav-item > a:hover {
-  color: #000000 !important;;
+  color: #1E3A5F !important;
 }
 
 [data-theme="light"] .breadcrumb-item.active {
-  color: #000000 !important;;
+  color: #1E3A5F !important;
 }
 
 /* Light theme sidebar selected/active - blue instead of green */
@@ -275,8 +286,8 @@
 [data-theme="light"] .desk-sidebar .sidebar-item.active,
 [data-theme="light"] .standard-sidebar a.active {
   background: #D1E8F5 !important;
-  color: #000000 !important;;
-  border-left-color: #000000 !important;;
+  color: #1E3A5F !important;
+  border-left-color: #3B82F6 !important;
 }
 
 /* Light theme indicator badges */
@@ -289,14 +300,14 @@
 [data-theme="light"] .indicator.blue,
 [data-theme="light"] .indicator-pill.blue {
   background: rgba(59, 130, 246, .15) !important;
-  color: #000000 !important;;
+  color: #3B82F6 !important;
   border-color: rgba(59, 130, 246, .3) !important;
 }
 
 /* Light theme module tiles hover */
 [data-theme="light"] .modules-section .desk-link:hover,
 [data-theme="light"] .modules-section .module-icon:hover {
-  border-color: #000000 !important;;
+  border-color: #3B82F6 !important;
   box-shadow: 0 0 20px rgba(59, 130, 246, 0.2) !important;
 }
 
@@ -708,9 +719,137 @@ label,
   color: var(--hx-green) !important;
 }
 
-/* Checkboxes */
+/* Caret/Cursor - Fix for input cursor visibility */
+.form-control,
+.frappe-control input,
+.frappe-control select,
+.frappe-control textarea,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="search"],
+input[type="url"],
+input[type="tel"],
+input[contenteditable="true"],
+textarea,
+.code-editor,
+.monaco-editor {
+  caret-color: var(--hx-green) !important;
+}
+
+/* Checkboxes - Native */
 input[type="checkbox"] {
-  accent-color: var(--hx-green) !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  width: 16px !important;
+  height: 16px !important;
+  background: var(--hx-bg-elevated) !important;
+  border: 1px solid var(--hx-border-mid) !important;
+  border-radius: 0 !important;
+  cursor: pointer !important;
+  position: relative !important;
+  accent-color: transparent !important;
+}
+input[type="checkbox"]:checked {
+  background: var(--hx-green) !important;
+  border-color: var(--hx-green) !important;
+}
+input[type="checkbox"]:checked::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 4px !important;
+  top: 1px !important;
+  width: 5px !important;
+  height: 9px !important;
+  border: solid var(--hx-bg-base) !important;
+  border-width: 0 2px 2px 0 !important;
+  transform: rotate(45deg) !important;
+  -webkit-transform: rotate(45deg) !important;
+}
+input[type="checkbox"]:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 2px var(--hx-green-glow) !important;
+  border-color: var(--hx-green) !important;
+}
+input[type="checkbox"]:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+}
+
+/* Frappe Custom Checkboxes */
+.checkbox,
+.checkbox-area input[type="checkbox"] {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  width: 16px !important;
+  height: 16px !important;
+  background: var(--hx-bg-elevated) !important;
+  border: 1px solid var(--hx-border-mid) !important;
+  border-radius: 0 !important;
+  cursor: pointer !important;
+  position: relative !important;
+  flex-shrink: 0 !important;
+}
+.checkbox input[type="checkbox"]:checked,
+.checkbox-area input[type="checkbox"]:checked {
+  background: var(--hx-green) !important;
+  border-color: var(--hx-green) !important;
+}
+.checkbox input[type="checkbox"]:checked::after,
+.checkbox-area input[type="checkbox"]:checked::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 4px !important;
+  top: 1px !important;
+  width: 5px !important;
+  height: 9px !important;
+  border: solid var(--hx-bg-base) !important;
+  border-width: 0 2px 2px 0 !important;
+  transform: rotate(45deg) !important;
+  -webkit-transform: rotate(45deg) !important;
+}
+
+/* Frappe List Row Checkboxes (for bulk select) */
+.list-row-checkbox,
+.dt-checkbox,
+.select-all {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  width: 16px !important;
+  height: 16px !important;
+  background: var(--hx-bg-elevated) !important;
+  border: 1px solid var(--hx-border-mid) !important;
+  border-radius: 0 !important;
+  cursor: pointer !important;
+  position: relative !important;
+  margin: 0 !important;
+}
+.list-row-checkbox:checked,
+.dt-checkbox:checked,
+.select-all:checked {
+  background: var(--hx-green) !important;
+  border-color: var(--hx-green) !important;
+}
+.list-row-checkbox:checked::after,
+.dt-checkbox:checked::after,
+.select-all:checked::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 4px !important;
+  top: 1px !important;
+  width: 5px !important;
+  height: 9px !important;
+  border: solid var(--hx-bg-base) !important;
+  border-width: 0 2px 2px 0 !important;
+  transform: rotate(45deg) !important;
+  -webkit-transform: rotate(45deg) !important;
+}
+
+/* Form checkbox label styling */
+.checkbox-label,
+.checkbox-value {
+  color: var(--hx-text-body) !important;
 }
 
 /* ============================================================
